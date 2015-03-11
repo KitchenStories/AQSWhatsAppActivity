@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface AQSWhatsAppActivity : UIActivity
-
+/**
+ Configure whether the activity should consider image items for sharing. Default: YES
+ */
+@property (nonatomic, assign) BOOL supportImages;
 @end

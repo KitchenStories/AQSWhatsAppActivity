@@ -20,6 +20,14 @@ NSString *const kAQSWhatsAppURLScheme = @"whatsapp://";
 
 @implementation AQSWhatsAppActivity
 
+- (instancetype) init {
+    self = [super init];
+    if (self) {
+        _supportImages = YES;
+    }
+    return self;
+}
+
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
     [super prepareWithActivityItems:activityItems];
     
@@ -47,7 +55,22 @@ NSString *const kAQSWhatsAppURLScheme = @"whatsapp://";
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
-    return [self isWhatsAppInstalled];
+    if (![self isWhatsAppInstalled]) {
+        return NO;
+    }
+    
+    if (activityItems.count == 0) {
+        return NO;
+    }
+    
+    if (!self.supportImages) {
+        if (![self nilOrFirstStringFromArray:activityItems] &&
+            ![self nilOrFirstURLFromArray:activityItems]) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 - (void)performActivity {
@@ -134,6 +157,9 @@ NSString *const kAQSWhatsAppURLScheme = @"whatsapp://";
 }
 
 - (UIImage *)nilOrFirstImageFromArray:(NSArray *)array {
+    if (!self.supportImages) {
+        return nil;
+    }
     for (id item in array) {
         if ([item isKindOfClass:[UIImage class]]) {
             return item;

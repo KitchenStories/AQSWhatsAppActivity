@@ -63,6 +63,24 @@
     XCTAssertTrue([activity canPerformWithActivityItems:activityItems]);
 }
 
+- (void)testItCanPerformActivityNotSupportingImagesWithTextAndImage {
+    _activity.supportImages = NO;
+    id activity = [OCMockObject partialMockForObject:_activity];
+    OCMStub([activity isWhatsAppInstalled]).andReturn(YES);
+    
+    NSArray *activityItems = @[@"hoge", [UIImage imageNamed:@"test.jpg"]];
+    XCTAssertTrue([activity canPerformWithActivityItems:activityItems]);
+}
+
+- (void)testItCannotPerformActivityNotSupportingImagesWithImageOnly {
+    _activity.supportImages = NO;
+    id activity = [OCMockObject partialMockForObject:_activity];
+    OCMStub([activity isWhatsAppInstalled]).andReturn(YES);
+    
+    NSArray *activityItems = @[[UIImage imageNamed:@"test.jpg"]];
+    XCTAssertFalse([activity canPerformWithActivityItems:activityItems]);
+}
+
 - (void)testItCanPerformActivityWithURLAndText {
     id activity = [OCMockObject partialMockForObject:_activity];
     OCMStub([activity isWhatsAppInstalled]).andReturn(YES);
