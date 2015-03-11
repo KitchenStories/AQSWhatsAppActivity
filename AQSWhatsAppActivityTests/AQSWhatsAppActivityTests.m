@@ -63,7 +63,7 @@
     XCTAssertTrue([activity canPerformWithActivityItems:activityItems]);
 }
 
-- (void)testItCannotPerformActivityWithURLAndText {
+- (void)testItCanPerformActivityWithURLAndText {
     id activity = [OCMockObject partialMockForObject:_activity];
     OCMStub([activity isWhatsAppInstalled]).andReturn(YES);
     
